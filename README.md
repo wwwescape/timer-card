@@ -1,61 +1,87 @@
-# Timer Card
+<h1 align="center">Timer Card</h1>
 
-[![GH-release](https://img.shields.io/github/v/release/wwwescape/timer-card.svg?style=flat-square)](https://github.com/wwwescape/timer-card/releases)
-[![GH-last-commit](https://img.shields.io/github/last-commit/wwwescape/timer-card.svg?style=flat-square)](https://github.com/wwwescape/timer-card/commits/master)
-[![GH-code-size](https://img.shields.io/github/languages/code-size/wwwescape/timer-card.svg?color=red&style=flat-square)](https://github.com/wwwescape/timer-card)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=flat-square)](https://github.com/hacs/default)
-[![Codecov Coverage](https://img.shields.io/codecov/c/github/wwwescape/timer-card/main.svg?style=flat-square)](https://codecov.io/gh/wwwescape/timer-card/)
-[![CodeFactor](https://www.codefactor.io/repository/github/wwwescape/timer-card/badge?style=flat-square)](https://www.codefactor.io/repository/github/wwwescape/timer-card)
+<p align="center">
+  A simple Home Assistant dashboard card that counts down to a date, or shows the time elapsed
+  since one. Based on the <a href="https://github.com/marcokreeft87/formulaone-card#countdown">Countdown card</a>
+  from <a href="https://github.com/marcokreeft87">marcokreeft87</a>'s FormulaOne Card.
+</p>
 
+<p align="center">
+  <a href="https://github.com/wwwescape/timer-card/releases"><img src="https://img.shields.io/github/v/release/wwwescape/timer-card.svg?style=flat-square" alt="GitHub release" /></a>
+  <a href="https://github.com/wwwescape/timer-card/commits/main"><img src="https://img.shields.io/github/last-commit/wwwescape/timer-card.svg?style=flat-square" alt="GitHub last commit" /></a>
+  <a href="https://github.com/wwwescape/timer-card"><img src="https://img.shields.io/github/languages/code-size/wwwescape/timer-card.svg?color=red&style=flat-square" alt="GitHub code size" /></a>
+  <a href="https://hacs.xyz/docs/faq/custom_repositories/"><img src="https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=flat-square" alt="HACS Custom" /></a>
+</p>
 
-Display a simple timer.
+## Screenshots
 
-Based on the [Countdown card type](https://github.com/marcokreeft87/formulaone-card#countdown) from [marcokreeft87](https://github.com/marcokreeft87)'s fantastic [FormulaOne Card](https://github.com/marcokreeft87/formulaone-card).
+![Timer Card](example.png)
 
-![Example](example.png)
+## Features
+
+- **Countdown** — days, hours, minutes, and seconds left until a date.
+- **Time elapsed** — set `reverse: true` to count up from a date instead.
+- **Fixed date or entity** — use an ISO 8601 date, or any entity whose state is a date (e.g. an
+  `input_datetime`).
+- **Custom text** — override every label, including the "Timer Completed" and "Timer Not
+  Started" messages.
+- **Visual editor** — set the title, date, entity, and direction without writing YAML.
 
 ## Installation
 
+### HACS (recommended)
 
-### Manual install
-1. Navigate to your `<config>/www/` folder inside your Home Assistant installation and create a new folder named `timer-card`.
-2. Manually download [timer-card.js](https://raw.githubusercontent.com/wwwescape/timer-card/main/timer-card.js).
-3. Place the file inside the `timer-card` folder you created in step 1.
-4. Add the following to your `configuration.yaml` file:
-  ```yaml
-  lovelace:
-    resources:
-      - url: /local/timer-card/timer-card.js
-        type: module
-  ```
-4. Alternately, go to `Settings` -> `Dashboards`. Then in the top right corner, click the 3 dots icon and click `Resources`. Click the `+ Add Resource` button in the bottom right corner. Add `/local/timer-card/timer-card.js` as the `URL` and choose `JavaScript Module` as the `Resource Type`. Click `Create`.
-5. Finally, refresh your browser window.
+1. Open HACS, click the ⋮ menu in the top right corner, and choose **Custom repositories**.
+2. Paste `https://github.com/wwwescape/timer-card`, choose **Dashboard** as the type, and click
+   **Add**.
+3. Search for **Timer Card**, click the ⋮ menu next to it, and choose **Download**.
+4. Refresh your browser.
 
+### Manual
+
+1. Download [timer-card.js](https://github.com/wwwescape/timer-card/releases/latest/download/timer-card.js)
+   and place it in `<config>/www/timer-card/`.
+2. Add it as a dashboard resource: go to **Settings → Dashboards → ⋮ → Resources → Add
+   Resource**, enter `/local/timer-card/timer-card.js` as the URL, and choose **JavaScript
+   Module**. Or, in YAML mode, add it to `configuration.yaml`:
+
+   ```yaml
+   lovelace:
+     resources:
+       - url: /local/timer-card/timer-card.js
+         type: module
+   ```
+
+3. Refresh your browser.
+
+> **Upgrading a manual install from before v1.1.0?** The old `raw.githubusercontent.com/.../main/timer-card.js`
+> link no longer serves a built file. Your installed copy keeps working, but get future updates
+> from the [latest release](https://github.com/wwwescape/timer-card/releases/latest/download/timer-card.js) instead.
 
 ## Configuration
 
-| Name              | Type          | Default                               | Description                                                                                                                     |
-| ----------------- | ------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| type              | string        | **Required**                          | `custom:timer-card`                                                                                                             |
-| title             | string        |                                       | The header of the card (hidden when null or empty)                                                                              |
-| date              | string        | **Required (if entity) not defined**  | The date to use for the timer (should be a valid [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date string)                |
-| entity            | string        | **Required (if date) not defined**    | The entity to use for the timer (entity state should be a valid date)                                                           |
-| reverse           | boolean       | `false`                               | Set to `true` to show elapsed time                                                                                              |
-| translations      | dictionary    |  _[translations](#Translations)_      | Dictionary to override the default translation                                                                                  |
+| Name           | Type       | Default                   | Description                                                                                          |
+| -------------- | ---------- | ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `type`         | string     | **Required**              | `custom:timer-card`                                                                                  |
+| `title`        | string     |                           | Card header (hidden when empty)                                                                      |
+| `date`         | string     | **Required** if no entity | Date to count from or to, as an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) string           |
+| `entity`       | string     | **Required** if no date   | Entity whose state is a valid date                                                                   |
+| `reverse`      | boolean    | `false`                   | Show the time elapsed since the date instead of a countdown                                          |
+| `translations` | dictionary |                           | Overrides for the card's text — see [Translations](#translations)                                    |
 
-**Note:** If both `date` and `entity` are defined, `date` will be used.
+If both `date` and `entity` are set, `date` is used.
 
-## Example configurations
+### Examples
 
-### Countdown
+Countdown:
 
 ```yaml
 type: custom:timer-card
 title: Countdown
-date: 2024-01-01T00:00:00Z
+date: 2027-01-01T00:00:00Z
 ```
 
-### Time elapsed
+Time elapsed:
 
 ```yaml
 type: custom:timer-card
@@ -64,30 +90,44 @@ entity: input_datetime.my_datetime
 reverse: true
 ```
 
-## Translations
+### Translations
 
-The following texts can be translated or altered.
-
-| Key                 | Default value         |
-| ------------------- | --------------------- |
-| days                | d                     |
-| hours               | h                     |
-| minutes             | m                     |
-| seconds             | s                     |
-| timer_complete      | 'Timer Completed'     |
-| timer_not_started   | 'Timer Not Started'   |
-
-Example:
+| Key                 | Default             |
+| ------------------- | ------------------- |
+| `days`              | `d`                 |
+| `hours`             | `h`                 |
+| `minutes`           | `m`                 |
+| `seconds`           | `s`                 |
+| `timer_complete`    | `Timer Completed`   |
+| `timer_not_started` | `Timer Not Started` |
 
 ```yaml
 type: custom:timer-card
 title: Countdown
-date: 2023-01-01T00:00:00Z
-translations: 
-  'timer_complete' : 'Countdown Done'  
+date: 2027-01-01T00:00:00Z
+translations:
+  timer_complete: Countdown Done
 ```
 
+## Development
 
-## TODO
-- [ ] Clean up code
-- [ ] Add more tests
+```bash
+git clone https://github.com/wwwescape/timer-card.git
+cd timer-card
+npm ci
+npm run build
+```
+
+The build writes `dist/timer-card.js` (`npm run watch` rebuilds on every change). Pushing a
+version tag (e.g. `git tag v1.2.0 && git push origin v1.2.0`) builds the card and publishes it
+to a new GitHub Release.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+## Support
+
+If you find Timer Card useful, consider buying me a coffee:
+
+[<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="40" />](https://buymeacoffee.com/wwwescape)
